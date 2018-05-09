@@ -1,0 +1,3 @@
+/home/amenj/Projects/Own/GLFW_Window/CMakeFiles/rebuild_cache.dir
+/home/amenj/Projects/Own/GLFW_Window/CMakeFiles/GLFW_Window.dir
+/home/amenj/Projects/Own/GLFW_Window/CMakeFiles/edit_cache.dir

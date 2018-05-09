@@ -1,0 +1,1 @@
+/usr/bin/c++  -g   CMakeFiles/GLFW_Window.dir/main.cpp.o  -o GLFW_Window /usr/lib/x86_64-linux-gnu/libGL.so /usr/lib/x86_64-linux-gnu/libGLU.so /usr/lib/x86_64-linux-gnu/libglut.so -lglfw 

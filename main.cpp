@@ -9,15 +9,22 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 
 int main() {
     //Initizlize GLFW
-    glfwInit();
+   if(! glfwInit()){
+      return -1;
+   };
 
     GLFWwindow* window = glfwCreateWindow(640,480,"MyTitle", nullptr, nullptr);
+    if(!window){
+        glfwTerminate();
+        return -1;
+    }
 
-    glfwSetKeyCallback(window,key_callback);
     glfwMakeContextCurrent(window);
 
-    while(!glfwWindowShouldClose(window)){
+    glfwSetKeyCallback(window,key_callback);
 
+    while(!glfwWindowShouldClose(window)){
+        glfwPollEvents();
 
     }
     glfwTerminate();

@@ -30,19 +30,7 @@ static void framebuffer_size_callback(GLFWwindow *window, int width, int height)
     glViewport(0, 0, width, height);
 }
 
-GLFWwindow *initializeGLFWWindow();
-
-
-int main() {
-    std::cout << "Starting program" << std::endl;
-    auto window = initializeGLFWWindow();
-
-    if (window == nullptr) {
-        std::cerr << "We were not ablle to initialize a GLFWwindow" << std::endl;
-        return -1;
-    }
-    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-
+unsigned int createVertexShader() {
     //Create vertex shader
     unsigned int vertexShader;
     vertexShader = glCreateShader(GL_VERTEX_SHADER);
@@ -57,13 +45,31 @@ int main() {
         std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
         return -1;
     }
+    return vertexShader;
+}
 
+GLFWwindow *initializeGLFWWindow();
+
+
+int main() {
+    std::cout << "Starting program" << std::endl;
+    auto window = initializeGLFWWindow();
+
+    if (window == nullptr) {
+        std::cerr << "We were not ablle to initialize a GLFWwindow" << std::endl;
+        return -1;
+    }
+    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+
+     auto vertexShader = createVertexShader();
     //Create fragment shader
     auto fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
     glCompileShader(fragmentShader);
 
 
+    int success;
+    char infoLog[512];
     auto shaderProgram = glCreateProgram();
     glAttachShader(shaderProgram, vertexShader);
     glAttachShader(shaderProgram, fragmentShader);
@@ -85,6 +91,9 @@ int main() {
             0.0f, 0.5f, 0.0f
     };
 
+    const float cirleVertices[] = {
+            -0.5f, -0.5f, 0.0f
+    };
     //Create VAO
     unsigned int VAO;
     glGenVertexArrays(1, &VAO);

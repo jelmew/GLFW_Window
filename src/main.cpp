@@ -30,32 +30,17 @@ static void framebuffer_size_callback(GLFWwindow *window, int width, int height)
     glViewport(0, 0, width, height);
 }
 
+GLFWwindow *initializeGLFWWindow();
+
+
 int main() {
     std::cout << "Starting program" << std::endl;
-    //Initizlize GLFW
-    if (!glfwInit()) {
-        return -1;
-    };
+    auto window = initializeGLFWWindow();
 
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-    GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "MyTitle", nullptr, nullptr);
-    if (!window) {
-        glfwTerminate();
+    if (window == nullptr) {
+        std::cerr << "We were not ablle to initialize a GLFWwindow" << std::endl;
         return -1;
     }
-
-    glfwMakeContextCurrent(window);
-    if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) {
-        std::cout << "Failed to initialize GLAD" << std::endl;
-        return -1;
-    }
-
-    glViewport(0, 0, WIDTH, HEIGHT);
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-    glfwSetKeyCallback(window, key_callback);
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
     //Create vertex shader
@@ -90,8 +75,6 @@ int main() {
         return -1;
     }
 
-    glUseProgram(shaderProgram);
-
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
 
@@ -123,7 +106,6 @@ int main() {
     glEnableVertexAttribArray(0);
 
 
-
     while (!glfwWindowShouldClose(window)) {
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT);
@@ -137,7 +119,37 @@ int main() {
         glfwPollEvents();
 
     }
+
+    glDeleteVertexArrays(1, &VAO);
+    glDeleteBuffers(1, &VBO);
     glfwTerminate();
     return 0;
 }
 
+GLFWwindow *initializeGLFWWindow() {
+    //Initizlize GLFW
+    if (!glfwInit()) {
+        return NULL;
+    };
+
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+    GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "MyTitle", nullptr, nullptr);
+    if (!window) {
+        glfwTerminate();
+        return nullptr;
+    }
+
+    glfwMakeContextCurrent(window);
+    if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) {
+        std::cout << "Failed to initialize GLAD" << std::endl;
+        return nullptr;
+    }
+
+    glViewport(0, 0, WIDTH, HEIGHT);
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    glfwSetKeyCallback(window, key_callback);
+    return window;
+}

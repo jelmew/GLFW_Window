@@ -1,5 +1,5 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/GLFW_Window.dir/main.cpp.o"
+  "CMakeFiles/GLFW_Window.dir/src/main.cpp.o"
   "GLFW_Window.pdb"
   "GLFW_Window"
 )

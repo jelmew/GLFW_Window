@@ -50,3 +50,6 @@ gen### C++ template
 *.out
 *.app
 
+/GLFW_Window
+/GLFW_Window.cbp
+/cmake-build-debug/

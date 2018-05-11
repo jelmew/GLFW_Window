@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/amenj/Projects/Own/GLFW_Window/main.cpp" "/home/amenj/Projects/Own/GLFW_Window/CMakeFiles/GLFW_Window.dir/main.cpp.o"
+  "/home/jelmew/Projects/GLFW_Window/main.cpp" "/home/jelmew/Projects/GLFW_Window/CMakeFiles/GLFW_Window.dir/main.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

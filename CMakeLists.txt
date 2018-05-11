@@ -3,6 +3,7 @@ project(GLFW_Window)
 
 set(CMAKE_CXX_STANDARD 14)
 
+set(OpenGL_GL_PREFERENCE GLVND)
 add_executable(GLFW_Window main.cpp)
 
 

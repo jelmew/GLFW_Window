@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/amenj/Projects/Own/GLFW_Window/main.cpp
+/home/jelmew/Projects/GLFW_Window/main.cpp
 iostream
 -
 GLFW/glfw3.h

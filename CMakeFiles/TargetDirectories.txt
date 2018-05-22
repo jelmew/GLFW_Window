@@ -1,4 +1,0 @@
-/home/jelmew/Projects/GLFW_Window/CMakeFiles/rebuild_cache.dir
-/home/jelmew/Projects/GLFW_Window/CMakeFiles/GLFW_Window.dir
-/home/jelmew/Projects/GLFW_Window/CMakeFiles/edit_cache.dir
-/home/jelmew/Projects/GLFW_Window/CMakeFiles/glad.dir

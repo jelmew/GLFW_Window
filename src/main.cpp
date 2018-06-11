@@ -1,3 +1,6 @@
+/**
+ * Taken from https://learnopengl.com/Getting-started/Hello-Window
+ */
 #include <iostream>
 #include <glad/glad.h>
 //#define GLFW_INCLUDE_NONE

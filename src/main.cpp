@@ -2,6 +2,8 @@
 #include <glad/glad.h>
 //#define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
+#include <system_error>
+
 
 constexpr int WIDTH = 800;
 constexpr int HEIGHT = 600;
@@ -30,10 +32,9 @@ static void framebuffer_size_callback(GLFWwindow *window, int width, int height)
     glViewport(0, 0, width, height);
 }
 
-unsigned int createVertexShader() {
+auto createVertexShader() {
     //Create vertex shader
-    unsigned int vertexShader;
-    vertexShader = glCreateShader(GL_VERTEX_SHADER);
+    auto vertexShader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
     glCompileShader(vertexShader);
 
@@ -43,13 +44,39 @@ unsigned int createVertexShader() {
     if (!success) {
         glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
         std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
-        return -1;
+        throw std::system_error(EDOM, std::generic_category(), infoLog);
     }
     return vertexShader;
 }
 
+auto createFragmentShader() {
+    auto fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
+    glCompileShader(fragmentShader);
+
+    return fragmentShader;
+}
+
 GLFWwindow *initializeGLFWWindow();
 
+auto createShaderProgram(unsigned int vertexShader, unsigned int fragmentShader) {
+    auto shaderProgram = glCreateProgram();
+    int success;
+    char infoLog[512];
+    glAttachShader(shaderProgram, vertexShader);
+    glAttachShader(shaderProgram, fragmentShader);
+    glLinkProgram(shaderProgram);
+    glGetShaderiv(shaderProgram, GL_COMPILE_STATUS, &success);
+    if (!success) {
+        glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
+        std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
+        throw std::system_error(EDOM, std::generic_category(), infoLog);
+    }
+
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
+    return shaderProgram;
+}
 
 int main() {
     std::cout << "Starting program" << std::endl;
@@ -61,29 +88,12 @@ int main() {
     }
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
-     auto vertexShader = createVertexShader();
+    auto vertexShader = createVertexShader();
+
     //Create fragment shader
-    auto fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-    glCompileShader(fragmentShader);
+    auto fragmentShader = createFragmentShader();
 
-
-    int success;
-    char infoLog[512];
-    auto shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-    glLinkProgram(shaderProgram);
-    glGetShaderiv(shaderProgram, GL_COMPILE_STATUS, &success);
-    if (!success) {
-        glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
-        return -1;
-    }
-
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
-
+    auto shaderProgram = createShaderProgram(vertexShader, fragmentShader);
 
     const float vertices[] = {
             -0.5f, -0.5f, 0.0f,
@@ -111,7 +121,7 @@ int main() {
                           GL_FLOAT, /* Type of data to store into vertex*/
                           GL_FALSE, /* Do not normalize all data*/
                           3 * sizeof(float), /* Stride, number of steps to take in the array to get to the next vertex*/
-                          (void *) 0);/* Offset whare the data begins in the buffer */
+                          (void *) nullptr);/* Offset whare the data begins in the buffer */
     glEnableVertexAttribArray(0);
 
 
